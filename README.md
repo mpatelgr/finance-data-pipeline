@@ -12,6 +12,7 @@ An end-to-end data pipeline for ingesting, cleaning, storing, and analyzing fina
     data/           raw and processed data files
     notebooks/      exploratory analysis and prototyping
     src/            pipeline scripts and reusable functions
+    tests/            test cases for pipeline scripts and reusable functions
 
 ## Getting Started
 1. Clone the repo
