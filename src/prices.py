@@ -86,7 +86,7 @@ def needs_update(conn, ticker, interval, max_age_hours, force=False,
     return age > timedelta(hours=max_age_hours)
 
 
-def update_ticker_data(conn, ticker, interval="1d", start="2026-01-01",
+def update_ticker_data(conn, ticker, interval="1d", start="2000-01-01",
                        end=None, max_age_hours=None, force=False,
                        source=DEFAULT_SOURCE):
     """
@@ -105,7 +105,7 @@ def update_ticker_data(conn, ticker, interval="1d", start="2026-01-01",
     interval : str, default "1d"
         Bar size, e.g. "1d" or "5m". Intraday intervals ignore start and end
         and use the maximum history Yahoo allows (see INTRADAY_PERIODS).
-    start : str, default "2026-01-01"
+    start : str, default "2000-01-01"
         First date to fetch, "YYYY-MM-DD". Daily or longer intervals only.
     end : str, optional
         Last date to fetch (exclusive). Defaults to now.
