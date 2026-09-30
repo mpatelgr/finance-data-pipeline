@@ -4,6 +4,7 @@ An end-to-end data pipeline for ingesting, cleaning, storing, and analyzing fina
 
 ## Roadmap
 - SQL-based data storage and querying
+- GUI front-end
 - Reproducible environments
 - Automated testing
 - Cloud storage integration
