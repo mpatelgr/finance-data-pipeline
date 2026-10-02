@@ -18,6 +18,15 @@ from .prices import (
     DEFAULT_SOURCE,
     SUPPORTED_SOURCES,
 )
+from .analysis import (
+    get_price_technicals,
+    get_fundamentals,
+    get_analyst_view,
+    get_options_summary,
+    analyze_stock,
+    print_report,
+    plot_technicals,
+)
 
 __all__ = [
     "init_db",
@@ -30,4 +39,11 @@ __all__ = [
     "update_many",
     "DEFAULT_SOURCE",
     "SUPPORTED_SOURCES",
+    "get_price_technicals",
+    "get_fundamentals",
+    "get_analyst_view",
+    "get_options_summary",
+    "analyze_stock",
+    "print_report",
+    "plot_technicals",
 ]
