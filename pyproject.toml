@@ -1,0 +1,12 @@
+[build-system]
+requires = ["setuptools>=61.0.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "finance-data-pipeline"
+version = "0.1.0"
+description = "Finance data pipeline to analyze stocks"
+dependencies = []
+
+[tool.setuptools.packages.find]
+where = ["src"]
