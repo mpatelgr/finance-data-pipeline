@@ -2,6 +2,8 @@
 data/*.csv
 data/*.db
 
+#Ignore random MacOS files
+.DS_Store
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
