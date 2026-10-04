@@ -5,8 +5,8 @@ import sqlite3
 import pandas as pd
 import pytest
 
-from src.database import init_db
-from src.tickers import standardize_tickers, batch_load_tickers, register_ticker
+from finance_data_pipeline.database import *
+from finance_data_pipeline.tickers import *
 
 
 @pytest.fixture

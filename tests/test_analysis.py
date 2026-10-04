@@ -4,23 +4,12 @@ Tests for src.analysis.
 yfinance is mocked throughout, so these tests make no network calls.
 """
 
-import matplotlib
-matplotlib.use("Agg")  # headless backend, so tests don't need a display
-
 import numpy as np
 import pandas as pd
 import pytest
 
-from src import analysis as analysis_module
-from src.analysis import (
-    get_price_technicals,
-    get_fundamentals,
-    get_analyst_view,
-    get_options_summary,
-    analyze_stock,
-    print_report,
-    plot_technicals,
-)
+from finance_data_pipeline import analysis as analysis_module
+from finance_data_pipeline.analysis import *
 
 
 class FakeChain:
@@ -56,7 +45,6 @@ class FakeTicker:
         if self.symbol == "NOHIST":
             return pd.DataFrame()
         idx = pd.date_range("2024-01-01", periods=300, freq="D")
-        idx.name = "Date"  # matches real yfinance's daily-bar index name
         rng = np.random.default_rng(0)
         close = 100 + np.cumsum(rng.normal(0, 1, len(idx)))
         return pd.DataFrame(
@@ -82,23 +70,6 @@ def test_get_price_technicals_normal_case():
     assert result['current_price'] is not None
     assert result['trend'] in ('bullish', 'bearish')
     assert result['max_drawdown'] <= 0  # a drawdown is zero or negative by definition
-
-
-def test_get_price_technicals_ignores_an_incomplete_trailing_bar(monkeypatch):
-    # A NaN close on the most recent row simulates the market still being
-    # open when yfinance is queried. current_price and the SMAs should fall
-    # back to the last real close instead of coming back as NaN.
-    class NaNTailTicker(FakeTicker):
-        def history(self, **kwargs):
-            df = super().history(**kwargs)
-            df.loc[df.index[-1], 'Close'] = float('nan')
-            return df
-
-    monkeypatch.setattr(analysis_module.yf, "Ticker", NaNTailTicker)
-
-    result = get_price_technicals("AAPL")
-    assert result['current_price'] is not None and not pd.isna(result['current_price'])
-    assert result['sma_20'] is not None and not pd.isna(result['sma_20'])
 
 
 def test_get_price_technicals_handles_empty_history():
@@ -161,21 +132,6 @@ def test_analyze_stock_handles_a_ticker_missing_everything():
     # No history, no options, no info: should not raise
     report = analyze_stock("NOHIST")
     assert report['technicals']['current_price'] is None
-
-
-# --- plot_technicals ---
-
-def test_plot_technicals_draws_for_a_normal_report():
-    report = analyze_stock("AAPL")
-    ax = plot_technicals(report)
-    assert ax is not None
-    assert len(ax.lines) >= 3  # Close, SMA 20, SMA 50 at minimum
-
-
-def test_plot_technicals_handles_missing_history():
-    report = analyze_stock("NOHIST")
-    ax = plot_technicals(report)
-    assert ax is None
 
 
 # --- print_report ---

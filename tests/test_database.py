@@ -5,7 +5,7 @@ import sqlite3
 import pandas as pd
 import pytest
 
-from src.database import init_db
+from finance_data_pipeline.database import *
 
 
 @pytest.fixture

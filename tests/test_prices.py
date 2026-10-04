@@ -11,15 +11,9 @@ from datetime import datetime, timedelta
 import pandas as pd
 import pytest
 
-from src.database import init_db
-from src import prices as prices_module
-from src.prices import (
-    default_max_age,
-    needs_update,
-    update_ticker_data,
-    update_many,
-    SUPPORTED_SOURCES,
-)
+from finance_data_pipeline import prices as prices_module
+from finance_data_pipeline.database import *
+from finance_data_pipeline.prices import *
 
 
 @pytest.fixture
