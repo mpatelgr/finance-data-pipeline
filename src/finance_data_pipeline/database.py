@@ -6,6 +6,7 @@ Tables
 tickers        : masterlist registry of every ticker the project knows about
 update_log     : when each (ticker, interval, source) was last refreshed
 price_history  : price bars, one row per ticker, interval, source, and timestamp
+fundamentals_snapshot : dated fundamentals and analyst targets, one row per ticker per refresh
 
 Views
 -----
@@ -21,6 +22,7 @@ def init_db(conn):
     masterlist view is rebuilt each time so its definition stays current.
     Existing tables are never altered, so a database created before the
     source column was added needs update_log and price_history dropped first.
+
 
     Parameters
     ----------
@@ -54,6 +56,17 @@ def init_db(conn):
         datetime TEXT,
         Open REAL, High REAL, Low REAL, Close REAL, Volume INTEGER,
         PRIMARY KEY (ticker, interval, source, datetime)
+    );
+
+    CREATE TABLE IF NOT EXISTS fundamentals_snapshot (
+        ticker TEXT,
+        fetched_at TEXT,
+        sector TEXT, industry TEXT,
+        market_cap REAL, pe_ratio REAL, forward_pe REAL, peg_ratio REAL,
+        dividend_yield REAL, profit_margin REAL, debt_to_equity REAL, beta REAL,
+        target_mean REAL, target_high REAL, target_low REAL,
+        number_of_analysts INTEGER,
+        PRIMARY KEY (ticker, fetched_at)
     );
 
     DROP VIEW IF EXISTS masterlist;

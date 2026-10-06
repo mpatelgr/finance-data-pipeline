@@ -23,9 +23,16 @@ from .analysis import (
     get_fundamentals,
     get_analyst_view,
     get_options_summary,
+    load_price_data,
     analyze_stock,
     print_report,
     plot_technicals,
+)
+
+from .fundamentals import (
+    fundamentals_need_update, 
+    save_fundamentals_snapshot, 
+    load_latest_fundamentals,
 )
 
 __all__ = [
@@ -43,7 +50,11 @@ __all__ = [
     "get_fundamentals",
     "get_analyst_view",
     "get_options_summary",
+    "load_price_data",
     "analyze_stock",
     "print_report",
     "plot_technicals",
+    "fundamentals_need_update",
+     "save_fundamentals_snapshot", 
+     "load_latest_fundamentals",
 ]
