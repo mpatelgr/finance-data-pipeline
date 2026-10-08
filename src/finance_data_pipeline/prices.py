@@ -150,6 +150,7 @@ def update_ticker_data(conn, ticker, interval="1d", start="2000-01-01",
         return
 
     df = df.dropna(subset=['Close'])
+
     if df.empty:
         print(f"No data returned for {ticker} ({interval}).")
         return
