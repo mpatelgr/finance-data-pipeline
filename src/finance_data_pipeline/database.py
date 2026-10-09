@@ -23,7 +23,6 @@ def init_db(conn):
     Existing tables are never altered, so a database created before the
     source column was added needs update_log and price_history dropped first.
 
-
     Parameters
     ----------
     conn : sqlite3.Connection

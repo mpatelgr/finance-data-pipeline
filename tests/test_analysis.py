@@ -122,10 +122,17 @@ def test_get_options_summary_handles_no_listed_options():
 
 # --- analyze_stock ---
 
-def test_analyze_stock_returns_all_four_sections():
+def test_analyze_stock_returns_all_sections():
     report = analyze_stock("AAPL")
-    assert set(report.keys()) == {'ticker', 'technicals', 'fundamentals', 'analyst', 'options'}
-    assert report['ticker'] == "AAPL"
+    assert set(report.keys()) == {
+        "ticker",
+        "technicals",
+        "fundamentals",
+        "fundamentals_as_of",
+        "analyst",
+        "options",
+    }
+    assert report["ticker"] == "AAPL"
 
 
 def test_analyze_stock_handles_a_ticker_missing_everything():
