@@ -73,10 +73,10 @@ def needs_update(conn, ticker, interval, max_age_hours, force=False,
     if force:
         return True
 
-    row = conn.execute(
-        "SELECT last_updated FROM update_log "
-        "WHERE ticker = ? AND interval = ? AND source = ?",
-        (ticker, interval, source)
+    row = conn.execute("""
+        SELECT last_updated FROM update_log 
+        WHERE ticker = ? AND interval = ? AND source = ?
+        """,(ticker, interval, source)
     ).fetchone()
 
     if row is None:
@@ -166,15 +166,16 @@ def update_ticker_data(conn, ticker, interval="1d", start="2000-01-01",
     rows = df[cols].astype(object).values.tolist()
 
     # INSERT OR REPLACE: on a primary key clash, the old row is overwritten
-    conn.executemany(
-        "INSERT OR REPLACE INTO price_history "
-        "(ticker, interval, source, datetime, Open, High, Low, Close, Volume) "
-        "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)", rows
+    conn.executemany("""
+        INSERT OR REPLACE INTO price_history
+        (ticker, interval, source, datetime, Open, High, Low, Close, Volume)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+        """, rows
     )
-    conn.execute(
-        "INSERT OR REPLACE INTO update_log (ticker, interval, source, last_updated) "
-        "VALUES (?, ?, ?, ?)",
-        (ticker, interval, source, datetime.now().isoformat())
+    conn.execute("""
+        INSERT OR REPLACE INTO update_log (ticker, interval, source, last_updated)
+        VALUES (?, ?, ?, ?)
+        """,(ticker, interval, source, datetime.now().isoformat())
     )
     register_ticker(conn, ticker)  # make sure it is in the masterlist
     conn.commit()

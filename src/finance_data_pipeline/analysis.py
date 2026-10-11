@@ -472,53 +472,6 @@ def analyze_stock(ticker, period="2y", conn=None, force=False):
         'fundamentals_as_of': as_of,
     }
 
-
-def plot_technicals(report, ax=None):
-    """
-    Plot price, moving averages, and 52-week high/low for an analyze_stock report.
-
-    Parameters
-    ----------
-    report : dict
-        Output of analyze_stock.
-    ax : matplotlib.axes.Axes, optional
-        Axes to draw on. A new figure and axes are created if not given.
-
-    Returns
-    -------
-    matplotlib.axes.Axes or None
-        The axes the chart was drawn on, or None if the report has no
-        price history to plot.
-    """
-    price_data = report['technicals']['price_data']
-    if price_data is None or price_data.empty:
-        print(f"No price history available to plot for {report['ticker']}.")
-        return None
-
-    if ax is None:
-        _, ax = plt.subplots(figsize=(10, 5))
-
-    ax.plot(price_data['Date'], price_data['Close'], label='Close', color='black', linewidth=1.3)
-    if 'SMA_20' in price_data:
-        ax.plot(price_data['Date'], price_data['SMA_20'], label='SMA 20', linewidth=1)
-    if 'SMA_50' in price_data:
-        ax.plot(price_data['Date'], price_data['SMA_50'], label='SMA 50', linewidth=1)
-
-    high = report['technicals']['52wk_high']
-    low = report['technicals']['52wk_low']
-    if high is not None:
-        ax.axhline(high, color='green', linestyle='--', linewidth=1, label=f'52wk High (${high:.2f})')
-    if low is not None:
-        ax.axhline(low, color='red', linestyle='--', linewidth=1, label=f'52wk Low (${low:.2f})')
-
-    ax.set_title(f"{report['ticker']} Price & Trend")
-    ax.set_xlabel('Date')
-    ax.set_ylabel('Price ($)')
-    ax.legend()
-    plt.tight_layout()
-    return ax
-
-
 def print_report(report):
     """
     Print an analyze_stock report in a readable, labeled format.
